@@ -19,14 +19,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // First name – validation + security practice
+    // First name – validation
     @Column(nullable = false, length = 50)
-    @Size(min = 3, max = 50, message = "First name must be between 3 and 50 characters")
+    @Size(min = 3, max = 50, message = "First name must be between 3 till 50 characters")
     private String firstName;
 
-    // Last name – validation + security practice
+    // Last name – validation
     @Column(nullable = false, length = 50)
-    @Size(min = 3, max = 50, message = "Last name must be between 3 and 50 characters")
+    @Size(min = 3, max = 50, message = "Last name must be between 3 till 50 characters")
     private String lastName;
 
     // Email – unique + valid format
@@ -39,25 +39,10 @@ public class User {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    // Role – use Enum for scalability
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Role role = Role.USER;
-
     // Optional: Audit fields (best practice)
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt;
 
-    @PreUpdate
-    public void setUpdatedAt() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // Enum for roles – scalable for future roles
-    public enum Role {
-        USER,
-        ADMIN
-    }
 }
