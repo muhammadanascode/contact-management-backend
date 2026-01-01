@@ -19,6 +19,7 @@ public class UserService {
         /**
          * Registers a new user
          */
+        @Transactional
         public User register(User user) {
 
             // 1. Validate business rule: email must be unique
