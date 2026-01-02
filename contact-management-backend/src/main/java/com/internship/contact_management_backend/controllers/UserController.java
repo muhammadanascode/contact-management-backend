@@ -1,6 +1,6 @@
 package com.internship.contact_management_backend.controllers;
 
-import com.internship.contact_management_backend.entities.User;
+import com.internship.contact_management_backend.models.User;
 import com.internship.contact_management_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

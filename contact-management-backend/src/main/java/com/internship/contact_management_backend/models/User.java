@@ -1,13 +1,9 @@
-package com.internship.contact_management_backend.entities;
+package com.internship.contact_management_backend.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
 @Getter
 @Setter
 @NoArgsConstructor

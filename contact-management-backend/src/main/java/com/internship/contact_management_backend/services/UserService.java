@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.internship.contact_management_backend.entities.User;
+import com.internship.contact_management_backend.models.User;
 
 @Service
 public class UserService {
