@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-user-table
+      author: anas
+      changes:
+        - sqlFile:
+            path: db/sql/001-create-user-table.sql
+            relativeToChangelogFile: false
