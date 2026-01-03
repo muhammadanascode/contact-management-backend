@@ -1,4 +1,5 @@
 package com.internship.contact_management_backend.entity;
+import com.internship.contact_management_backend.dto.UserResponseDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -30,6 +31,7 @@ public class User {
     // Email – unique + valid format
     @Column(nullable = false, unique = true, length = 100)
     @Email(message = "Email should be valid")
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$",message = "Email format is invalid")
     private String email;
 
     // Password – never expose plain text
@@ -42,5 +44,9 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt;
+
+    public UserResponseDto toDto() {
+        return UserResponseDto.from(this);
+    }
 
 }
