@@ -1,6 +1,6 @@
 package com.internship.contact_management_backend.repositories;
 
-import com.internship.contact_management_backend.models.User;
+import com.internship.contact_management_backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

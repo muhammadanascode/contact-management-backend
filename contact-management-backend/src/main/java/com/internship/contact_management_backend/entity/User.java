@@ -1,4 +1,4 @@
-package com.internship.contact_management_backend.models;
+package com.internship.contact_management_backend.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
