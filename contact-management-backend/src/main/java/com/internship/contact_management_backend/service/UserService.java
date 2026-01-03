@@ -1,6 +1,6 @@
-package com.internship.contact_management_backend.services;
+package com.internship.contact_management_backend.service;
 
-import com.internship.contact_management_backend.repositories.UserRepository;
+import com.internship.contact_management_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
