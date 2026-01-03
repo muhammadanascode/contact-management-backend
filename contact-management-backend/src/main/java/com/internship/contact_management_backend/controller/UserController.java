@@ -3,6 +3,7 @@ package com.internship.contact_management_backend.controller;
 import com.internship.contact_management_backend.dto.UserRegisterDto;
 import com.internship.contact_management_backend.entity.User;
 import com.internship.contact_management_backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterDto> register(@RequestBody UserRegisterDto user) {
+    public ResponseEntity<UserRegisterDto> register(@Valid @RequestBody UserRegisterDto user) {
         User savedUser = userService.register(user.toEntity());
         return ResponseEntity.ok(savedUser.toDto());
     }
