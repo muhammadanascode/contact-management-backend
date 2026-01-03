@@ -2,8 +2,10 @@ package com.internship.contact_management_backend.dto;
 
 import com.internship.contact_management_backend.entity.User;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class UserRegisterDto {
     private String firstName;
     private String lastName;
