@@ -1,5 +1,5 @@
 package com.internship.contact_management_backend.entity;
-import com.internship.contact_management_backend.dto.UserResponseDto;
+import com.internship.contact_management_backend.dto.UserRegisterDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -45,8 +45,8 @@ public class User {
 
     private LocalDateTime updatedAt;
 
-    public UserResponseDto toDto() {
-        return UserResponseDto.from(this);
+    public UserRegisterDto toDto() {
+        return UserRegisterDto.from(this);
     }
 
 }
