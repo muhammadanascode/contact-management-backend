@@ -1,6 +1,7 @@
 package com.internship.contact_management_backend.controller;
 
 import com.internship.contact_management_backend.dto.UserRegisterDto;
+import com.internship.contact_management_backend.dto.UserResponseDto;
 import com.internship.contact_management_backend.entity.User;
 import com.internship.contact_management_backend.service.UserService;
 import jakarta.validation.Valid;
@@ -16,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterDto> register(@Valid @RequestBody UserRegisterDto user) {
+    public ResponseEntity<UserResponseDto> register(@Valid @RequestBody UserRegisterDto user) {
         User savedUser = userService.register(user.toEntity());
         return ResponseEntity.ok(savedUser.toDto());
     }
