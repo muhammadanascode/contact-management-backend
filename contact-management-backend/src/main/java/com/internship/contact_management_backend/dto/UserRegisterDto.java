@@ -41,13 +41,4 @@ public class UserRegisterDto {
                 .build();
     }
 
-    public static UserRegisterDto from(User user) {
-        return UserRegisterDto.builder()
-                              .firstName(user.getFirstName())
-                              .lastName(user.getLastName())
-                              .email(user.getEmail())
-                              .password(null)
-                              .build();
-    }
-
 }
