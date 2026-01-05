@@ -23,11 +23,9 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String email, String firstName, String lastName) {
+    public String generateToken(String email) {
         return Jwts.builder()
                    .subject(email)
-                   .claim("firstName", firstName)
-                   .claim("lastName", lastName)
                    .claim("email", email)
                    .issuedAt(new Date())
                    .expiration(new Date(System.currentTimeMillis() + expiration))
