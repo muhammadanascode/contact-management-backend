@@ -24,6 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                                                                      .password(user.getPassword())
                                                                      .build();
         }
-        throw new UsernameNotFoundException("Invalid email or password");
+        throw new UsernameNotFoundException("Bad Credentials");
     }
 }

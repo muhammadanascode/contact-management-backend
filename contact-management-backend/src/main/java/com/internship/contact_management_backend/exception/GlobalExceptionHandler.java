@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.UNAUTHORIZED.value(),
                 "Authentication Failed",
-                "Invalid username or password",
+                "Bad Credentials",
                 request.getRequestURI()
         );
 
