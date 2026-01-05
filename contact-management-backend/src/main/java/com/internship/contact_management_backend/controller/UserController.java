@@ -1,5 +1,6 @@
 package com.internship.contact_management_backend.controller;
 
+import com.internship.contact_management_backend.dto.LoginResponseDto;
 import com.internship.contact_management_backend.dto.UserLoginDto;
 import com.internship.contact_management_backend.dto.UserRegisterDto;
 import com.internship.contact_management_backend.dto.UserResponseDto;
@@ -38,13 +39,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody UserLoginDto user){
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody UserLoginDto user){
+
+        //Authenticate user
       authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword()));
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+
+        //Generate JWT token
         String token = jwtUtil.generateToken(
                 userDetails.getUsername());
-        return token;
+
+        //Convert raw token into response dto
+        LoginResponseDto response = new LoginResponseDto(token);
+
+        return ResponseEntity.ok(response);
     }
 
 }
