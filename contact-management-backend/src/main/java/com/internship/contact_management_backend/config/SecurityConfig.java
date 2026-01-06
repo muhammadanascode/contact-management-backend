@@ -1,24 +1,28 @@
 package com.internship.contact_management_backend.config;
 
 
+import com.internship.contact_management_backend.filter.JwtFilter;
 import com.internship.contact_management_backend.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtFilter JwtFilter;
 
     // Security filter chain
     @Bean
@@ -34,8 +38,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()             // all else require auth
                 )
 
-                // Use HTTP Basic for now (we'll replace with JWT later)
-                .httpBasic(Customizer.withDefaults());
+                .addFilterBefore(
+                        JwtFilter, UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
