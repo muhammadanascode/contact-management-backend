@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-contact-table
+      author: anas
+      changes:
+        - sqlFile:
+            path: db/sql/002-create-contact-table.sql
+            relativeToChangelogFile: false
