@@ -12,7 +12,7 @@ CREATE TABLE contacts (
         CHECK (CHAR_LENGTH(name) >= 3),
 
     CONSTRAINT chk_contact_phone_format
-        CHECK (phone_number REGEXP '^[0-9]{10,15}$'),
+        CHECK (phone_number REGEXP '^\\+[1-9][0-9]{1,14}$'),
 
     CONSTRAINT fk_contacts_user
         FOREIGN KEY (user_id) REFERENCES users(id)
