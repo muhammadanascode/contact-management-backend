@@ -32,7 +32,13 @@ public class ContactService {
     }
 
 
-    public List<Contact> getContactsByUserId(Long userId){
-        return contactRepository.findByUserId(userId);
+    public List<Contact> getContactsByEmail(String email){
+        // find user by email
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+        // fetch contacts by user id
+        return contactRepository.findByUserId(user.getId());
     }
 }
