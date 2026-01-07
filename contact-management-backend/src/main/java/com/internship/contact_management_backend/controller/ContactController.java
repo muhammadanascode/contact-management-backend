@@ -29,4 +29,18 @@ public class ContactController {
        return ResponseEntity.ok(savedContact.toDto());
 
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAllContactsForUser(){
+
+        //extract the email
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        //fetch contacts by user id
+        return ResponseEntity.ok(contactService.getContactsByEmail(userEmail)
+                .stream()
+                .map(Contact::toDto)
+                .toList());
+    }
 }
