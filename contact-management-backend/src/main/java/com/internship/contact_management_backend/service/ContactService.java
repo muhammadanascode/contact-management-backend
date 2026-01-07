@@ -2,6 +2,7 @@ package com.internship.contact_management_backend.service;
 
 import com.internship.contact_management_backend.entity.Contact;
 import com.internship.contact_management_backend.entity.User;
+import com.internship.contact_management_backend.exception.ResourceNotFoundException;
 import com.internship.contact_management_backend.repository.ContactRepository;
 import com.internship.contact_management_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class ContactService {
         // find contact by id
         Contact contact = contactRepository.findContactById(contactId);
         if (contact == null) {
-            throw new IllegalArgumentException("Contact not found with id: " + contactId);
+            throw new ResourceNotFoundException("Contact not found with id: " + contactId);
         }
         // check if the contact belongs to the user
         if (!contact.getUser().getId().equals(user.getId())) {
@@ -61,5 +62,4 @@ public class ContactService {
         // delete the contact
         contactRepository.delete(contact);
     }
-
 }
