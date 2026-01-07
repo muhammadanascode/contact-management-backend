@@ -43,4 +43,15 @@ public class ContactController {
                 .map(Contact::toDto)
                 .toList());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteContact(@PathVariable Long id){
+        //extract the email
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        //delete the contact
+        contactService.deleteContact(id,userEmail);
+        return ResponseEntity.noContent().build();
+    }
 }
