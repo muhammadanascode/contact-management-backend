@@ -1,5 +1,6 @@
 package com.internship.contact_management_backend.entity;
 
+import com.internship.contact_management_backend.dto.ContactDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,4 +33,11 @@ public class Contact {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public ContactDto toDto() {
+        return ContactDto.builder()
+                .name(this.name)
+                .phoneNumber(this.phoneNumber)
+                .build();
+    }
 }
