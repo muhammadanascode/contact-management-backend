@@ -23,10 +23,8 @@ public class ContactService {
     public Contact createContact(Contact contact, String email) {
 
         // find user by email
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with email: " + email);
-        }
+        User user = userRepository.findByEmail(email)
+                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
         // attach contact to user
         contact.setUser(user);
 
@@ -36,25 +34,19 @@ public class ContactService {
 
     public List<Contact> getContactsByEmail(String email){
         // find user by email
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with email: " + email);
-        }
+        User user = userRepository.findByEmail(email)
+                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
         // fetch contacts by user id
         return contactRepository.findByUserId(user.getId());
     }
 
     public void deleteContact(Long contactId, String email) {
         // find user by email
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with email: " + email);
-        }
+        User user = userRepository.findByEmail(email)
+                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
         // find contact by id
-        Contact contact = contactRepository.findContactById(contactId);
-        if (contact == null) {
-            throw new ResourceNotFoundException("Contact not found with id: " + contactId);
-        }
+        Contact contact = contactRepository.findContactById(contactId)
+                                           .orElseThrow(() -> new ResourceNotFoundException("Contact not found : " + contactId));
         // check if the contact belongs to the user
         if (!contact.getUser().getId().equals(user.getId())) {
             throw new BadCredentialsException("Bad Credentials");
@@ -65,15 +57,12 @@ public class ContactService {
 
     public Contact updateContact(Long contactId, Contact updatedContact, String email) {
         // find user by email
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with email: " + email);
-        }
+        User user = userRepository.findByEmail(email)
+                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
+
         // find contact by id
-        Contact existingContact = contactRepository.findContactById(contactId);
-        if (existingContact == null) {
-            throw new ResourceNotFoundException("Contact not found with id: " + contactId);
-        }
+        Contact existingContact = contactRepository.findContactById(contactId)
+                                                   .orElseThrow(() -> new ResourceNotFoundException("Contact not found : " + contactId));
         // check if the contact belongs to the user
         if (!existingContact.getUser().getId().equals(user.getId())) {
             throw new BadCredentialsException("Bad Credentials");
