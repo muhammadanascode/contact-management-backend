@@ -1,6 +1,5 @@
 package com.internship.contact_management_backend.service;
 
-import com.internship.contact_management_backend.dto.ContactDto;
 import com.internship.contact_management_backend.entity.Contact;
 import com.internship.contact_management_backend.entity.User;
 import com.internship.contact_management_backend.exception.ResourceNotFoundException;
@@ -80,14 +79,11 @@ public class ContactService {
     }
 
     // Search contacts by keyword in first name or last name
-    public List<ContactDto> searchContacts(String keyword, String email) {
+    public List<Contact> searchContacts(String keyword, String email) {
 
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
 
-        return contactRepository.searchContacts(user.getId(), keyword)
-                                .stream()
-                                .map(ContactDto::from)
-                                .toList();
+        return contactRepository.searchContacts(user.getId(), keyword);
     }
 }

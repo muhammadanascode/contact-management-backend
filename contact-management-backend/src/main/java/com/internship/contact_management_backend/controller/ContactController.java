@@ -77,6 +77,10 @@ public class ContactController {
         String userEmail = authentication.getName();
 
         //search contacts
-         return ResponseEntity.ok(contactService.searchContacts(keyword, userEmail));
+         return ResponseEntity.ok(contactService.searchContacts(keyword, userEmail)
+                                                .stream()
+                                                .map(ContactDto::from)
+                                                .toList()
+         );
     }
 }
