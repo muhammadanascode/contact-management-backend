@@ -68,8 +68,12 @@ public class ContactService {
             throw new BadCredentialsException("Bad Credentials");
         }
         // update contact details
-        existingContact.setName(updatedContact.getName());
+        existingContact.setFirstName(updatedContact.getFirstName());
+        existingContact.setLastName(updatedContact.getLastName());
+        existingContact.setEmail(updatedContact.getEmail());
+        existingContact.setEmailLabel(updatedContact.getEmailLabel());
         existingContact.setPhoneNumber(updatedContact.getPhoneNumber());
+        existingContact.setPhoneNumberLabel(updatedContact.getPhoneNumberLabel());
 
         return contactRepository.save(existingContact);
     }
