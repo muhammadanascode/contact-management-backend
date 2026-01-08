@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/contacts")
 public class ContactController {
@@ -30,7 +32,7 @@ public class ContactController {
 
     }
 
-    @GetMapping("/getAll")
+    @GetMapping(value = "/getAll", params = "!name")
     public ResponseEntity<?> getAllContactsForUser(){
 
         //extract the email
@@ -65,5 +67,16 @@ public class ContactController {
         Contact updatedContact = contactService.updateContact(id, contactDto.toEntity(), userEmail);
         return ResponseEntity.ok(updatedContact.toDto());
 
+    }
+
+    @GetMapping(value = "/getAll", params = "name")
+    public ResponseEntity<List<ContactDto>> searchContacts(
+            @RequestParam("name") String keyword) {
+        //extract the email
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        //search contacts
+         return ResponseEntity.ok(contactService.searchContacts(keyword, userEmail));
     }
 }
