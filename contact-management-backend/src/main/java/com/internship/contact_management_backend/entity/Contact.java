@@ -19,11 +19,23 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 50)
+    private String firstName;
+
+    @Column(nullable = false, length = 50)
+    private String lastName;
+
     @Column(nullable = false, length = 100)
-    private String name;
+    private String email;
+
+    @Column(nullable = false, length = 20)
+    private String emailLabel;
 
     @Column(nullable = false, length = 20)
     private String phoneNumber;
+
+    @Column(nullable = false, length = 20)
+    private String phoneNumberLabel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -35,9 +47,6 @@ public class Contact {
     private LocalDateTime updatedAt;
 
     public ContactDto toDto() {
-        return ContactDto.builder()
-                .name(this.name)
-                .phoneNumber(this.phoneNumber)
-                .build();
+       return ContactDto.from(this);
     }
 }
