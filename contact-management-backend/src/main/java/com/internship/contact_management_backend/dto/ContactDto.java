@@ -1,9 +1,7 @@
 package com.internship.contact_management_backend.dto;
 
 import com.internship.contact_management_backend.entity.Contact;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,29 +13,56 @@ import java.time.LocalDateTime;
 @Builder
 public class ContactDto {
 
-    @NotBlank(message = "Name is required")
-    @Size(min = 3, max = 100, message = "Name must be at least 3 characters")
-    private String name;
+    @NotBlank(message = "First name is required")
+    @Size(min = 3, max = 50, message = "First name must be 3–100 characters")
+    private String firstName;
+
+    @NotBlank(message = "Last name is required")
+    @Size(min = 3, max = 50, message = "Last name must be 3–100 characters")
+    private String lastName;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
+    private String email;
+
+    @NotBlank(message = "Email label is required")
+    @Size(min = 3, max = 20, message = "Email label must be 3–20 characters")
+    private String emailLabel;
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^\\+[1-9]\\d{1,14}$", message = "Phone number must be 10-15 digits")
+    @Pattern(
+            regexp = "^\\+[1-9][0-9]{1,14}$",
+            message = "Phone number must be in international format (E.164)"
+    )
     private String phoneNumber;
 
-    // Convert DTO to Entity
+    @NotBlank(message = "Phone number label is required")
+    @Size(min = 3, max = 20, message = "Phone label must be 3–20 characters")
+    private String phoneNumberLabel;
+
+    // DTO → Entity
     public Contact toEntity() {
         return Contact.builder()
-                .name(this.name)
-                .phoneNumber(this.phoneNumber)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
+                      .firstName(firstName)
+                      .lastName(lastName)
+                      .email(email)
+                      .emailLabel(emailLabel)
+                      .phoneNumber(phoneNumber)
+                      .phoneNumberLabel(phoneNumberLabel)
+                      .createdAt(LocalDateTime.now())
+                      .updatedAt(LocalDateTime.now())
+                      .build();
     }
 
-    // Convert Entity to DTO
-    public static ContactDto from (Contact contact){
+    // Entity → DTO
+    public static ContactDto from(Contact contact) {
         return ContactDto.builder()
-                .name(contact.getName())
-                .phoneNumber(contact.getPhoneNumber())
-                .build();
+                         .firstName(contact.getFirstName())
+                         .lastName(contact.getLastName())
+                         .email(contact.getEmail())
+                         .emailLabel(contact.getEmailLabel())
+                         .phoneNumber(contact.getPhoneNumber())
+                         .phoneNumberLabel(contact.getPhoneNumberLabel())
+                         .build();
     }
 }
