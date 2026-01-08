@@ -54,4 +54,16 @@ public class ContactController {
         contactService.deleteContact(id,userEmail);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ContactDto> updateContact(@PathVariable Long id, @Valid @RequestBody ContactDto contactDto){
+        //extract the email
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        //update the contact
+        Contact updatedContact = contactService.updateContact(id, contactDto.toEntity(), userEmail);
+        return ResponseEntity.ok(updatedContact.toDto());
+
+    }
 }
