@@ -62,4 +62,26 @@ public class ContactService {
         // delete the contact
         contactRepository.delete(contact);
     }
+
+    public Contact updateContact(Long contactId, Contact updatedContact, String email) {
+        // find user by email
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+        // find contact by id
+        Contact existingContact = contactRepository.findContactById(contactId);
+        if (existingContact == null) {
+            throw new ResourceNotFoundException("Contact not found with id: " + contactId);
+        }
+        // check if the contact belongs to the user
+        if (!existingContact.getUser().getId().equals(user.getId())) {
+            throw new BadCredentialsException("Bad Credentials");
+        }
+        // update contact details
+        existingContact.setName(updatedContact.getName());
+        existingContact.setPhoneNumber(updatedContact.getPhoneNumber());
+
+        return contactRepository.save(existingContact);
+    }
 }
