@@ -1,5 +1,6 @@
 package com.internship.contact_management_backend.service;
 
+import com.internship.contact_management_backend.dto.UpdatePasswordDto;
 import com.internship.contact_management_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,4 +34,23 @@ public class UserService {
         public User findByEmail(String email) {
             return userRepository.findByEmail(email).orElse(null);
     }
+
+    public void updatePassword(String email, UpdatePasswordDto dto) {
+        // Validate passwords match
+        if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
+
+        User user = findByEmail(email);
+
+        // Validate old password
+        if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Old password is incorrect");
+        }
+
+        // Update entity
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
+    }
+
 }
