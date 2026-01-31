@@ -33,7 +33,7 @@ public class ContactController {
     }
 
     @GetMapping(value = "/getAll", params = "!name")
-    public ResponseEntity<?> getAllContactsForUser(){
+    public ResponseEntity<List<ContactDto>> getAllContactsForUser(){
 
         //extract the email
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
