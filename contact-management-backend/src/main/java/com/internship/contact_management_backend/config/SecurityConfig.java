@@ -3,7 +3,6 @@ package com.internship.contact_management_backend.config;
 
 import com.internship.contact_management_backend.filter.JwtFilter;
 import com.internship.contact_management_backend.service.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,18 +17,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtFilter jwtFilter;
 
-    @Autowired
-    private JwtFilter JwtFilter;
+    // Constructor injection
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtFilter jwtFilter) {
+        this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
+    }
 
     // Security filter chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // Disable CSRF for simplicity (safe for stateless APIs)
+                // Disable CSRF (safe for stateless Apis)
                 .csrf(csrf -> csrf.disable())
 
                 // Define route authorization
@@ -39,7 +41,7 @@ public class SecurityConfig {
                 )
 
                 .addFilterBefore(
-                        JwtFilter, UsernamePasswordAuthenticationFilter.class
+                        jwtFilter, UsernamePasswordAuthenticationFilter.class
                 );
 
         return http.build();
