@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 public class ContactDto {
 
+    private Long id;
+
     @NotBlank(message = "First name is required")
     @Size(min = 3, max = 50, message = "First name must be 3–100 characters")
     private String firstName;
@@ -43,6 +45,7 @@ public class ContactDto {
     // DTO → Entity
     public Contact toEntity() {
         return Contact.builder()
+                      .id(id)
                       .firstName(firstName)
                       .lastName(lastName)
                       .email(email)
@@ -57,6 +60,7 @@ public class ContactDto {
     // Entity → DTO
     public static ContactDto from(Contact contact) {
         return ContactDto.builder()
+                         .id(contact.getId())
                          .firstName(contact.getFirstName())
                          .lastName(contact.getLastName())
                          .email(contact.getEmail())
