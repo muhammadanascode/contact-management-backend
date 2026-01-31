@@ -1,6 +1,5 @@
 package com.internship.contact_management_backend.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
