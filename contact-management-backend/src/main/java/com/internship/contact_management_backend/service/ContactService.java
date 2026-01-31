@@ -22,11 +22,13 @@ public class ContactService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final String BAD_CREDENTIALS = "Bad Credentials";
+
     public Contact createContact(Contact contact, String email) {
 
         // find user by email
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
+                                  .orElseThrow(() -> new UsernameNotFoundException(BAD_CREDENTIALS));
         // attach contact to user
         contact.setUser(user);
 
@@ -39,7 +41,7 @@ public class ContactService {
     public List<Contact> getContactsByEmail(String email){
         // find user by email
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
+                                  .orElseThrow(() -> new UsernameNotFoundException(BAD_CREDENTIALS));
         // fetch contacts by user id
         List<Contact> contacts = contactRepository.findByUserId(user.getId());
         log.info("Fetched {} contacts for user={}", contacts.size(), email);
@@ -49,13 +51,13 @@ public class ContactService {
     public void deleteContact(Long contactId, String email) {
         // find user by email
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
+                                  .orElseThrow(() -> new UsernameNotFoundException(BAD_CREDENTIALS));
         // find contact by id
         Contact contact = contactRepository.findContactById(contactId)
                                            .orElseThrow(() -> new ResourceNotFoundException("Contact not found : " + contactId));
         // check if the contact belongs to the user
         if (!contact.getUser().getId().equals(user.getId())) {
-            throw new BadCredentialsException("Bad Credentials");
+            throw new BadCredentialsException(BAD_CREDENTIALS);
         }
         // delete the contact
         contactRepository.delete(contact);
@@ -65,14 +67,14 @@ public class ContactService {
     public Contact updateContact(Long contactId, Contact updatedContact, String email) {
         // find user by email
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
+                                  .orElseThrow(() -> new UsernameNotFoundException(BAD_CREDENTIALS));
 
         // find contact by id
         Contact existingContact = contactRepository.findContactById(contactId)
                                                    .orElseThrow(() -> new ResourceNotFoundException("Contact not found : " + contactId));
         // check if the contact belongs to the user
         if (!existingContact.getUser().getId().equals(user.getId())) {
-            throw new BadCredentialsException("Bad Credentials");
+            throw new BadCredentialsException(BAD_CREDENTIALS);
         }
         // update contact details
         existingContact.setFirstName(updatedContact.getFirstName());
@@ -91,7 +93,7 @@ public class ContactService {
     public List<Contact> searchContacts(String keyword, String email) {
 
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
+                                  .orElseThrow(() -> new UsernameNotFoundException(BAD_CREDENTIALS));
 
         List<Contact> results =  contactRepository.searchContacts(user.getId(), keyword);
         log.info("Search returned {} results for user={}", results.size(), email);
