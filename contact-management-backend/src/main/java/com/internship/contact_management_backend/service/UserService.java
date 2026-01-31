@@ -2,12 +2,14 @@ package com.internship.contact_management_backend.service;
 
 import com.internship.contact_management_backend.dto.UpdatePasswordDto;
 import com.internship.contact_management_backend.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.internship.contact_management_backend.entity.User;
 
 @Service
+@Slf4j
 public class UserService {
 
         @Autowired
@@ -28,7 +30,9 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             // 3. Save user
-            return userRepository.save(user);
+            User saved =  userRepository.save(user);
+            log.info("User registered successfully id={} email={}", saved.getId(), saved.getEmail());
+            return  saved;
         }
 
         public User findByEmail(String email) {
@@ -51,6 +55,7 @@ public class UserService {
         // Update entity
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userRepository.save(user);
+        log.info("Password updated successfully for user={}", email);
     }
 
 }

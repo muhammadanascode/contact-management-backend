@@ -1,6 +1,7 @@
 package com.internship.contact_management_backend.exception;
 
 import com.internship.contact_management_backend.dto.ErrorResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     // Handle validation errors
@@ -20,12 +22,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleValidationException(
             MethodArgumentNotValidException ex, HttpServletRequest request) {
 
+
         String errors = ex.getBindingResult()
                           .getFieldErrors()
                           .stream()
                           .map(FieldError::getDefaultMessage)
                           .collect(Collectors.joining("; "));
 
+        log.warn("Validation failed at {} → {}", request.getRequestURI(), errors);
         ErrorResponseDto response = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -33,7 +37,6 @@ public class GlobalExceptionHandler {
                 errors,
                 request.getRequestURI()
         );
-
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -42,6 +45,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleBusiness(
             IllegalArgumentException ex, HttpServletRequest request) {
 
+        log.warn("Business exception at {} → {}", request.getRequestURI(), ex.getMessage());
         ErrorResponseDto response = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -58,6 +62,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleBusiness(
             ResourceNotFoundException ex, HttpServletRequest request) {
 
+        log.warn("Resource not found at {} → {}", request.getRequestURI(), ex.getMessage());
         ErrorResponseDto response = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
@@ -74,6 +79,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleBadCredentials(
             BadCredentialsException ex, HttpServletRequest request) {
 
+        log.warn("Authentication failure at {} → {}", request.getRequestURI(), ex.getMessage());
         ErrorResponseDto response = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.UNAUTHORIZED.value(),
@@ -90,11 +96,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleAllExceptions(
             Exception ex, HttpServletRequest request) {
 
+        log.error("Unexpected error at {}", request.getRequestURI(), ex);
         ErrorResponseDto response = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
-                ex.getMessage(),
+                "Something went wrong", //not exposing server's error
                 request.getRequestURI()
         );
 

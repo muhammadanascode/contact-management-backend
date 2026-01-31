@@ -5,6 +5,7 @@ import com.internship.contact_management_backend.entity.User;
 import com.internship.contact_management_backend.exception.ResourceNotFoundException;
 import com.internship.contact_management_backend.repository.ContactRepository;
 import com.internship.contact_management_backend.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ContactService {
 
     @Autowired
@@ -28,7 +30,9 @@ public class ContactService {
         // attach contact to user
         contact.setUser(user);
 
-        return contactRepository.save(contact);
+        Contact saved = contactRepository.save(contact);
+        log.info("Contact created id={} for user={}", saved.getId(), email);
+        return saved ;
     }
 
 
@@ -37,7 +41,9 @@ public class ContactService {
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
         // fetch contacts by user id
-        return contactRepository.findByUserId(user.getId());
+        List<Contact> contacts = contactRepository.findByUserId(user.getId());
+        log.info("Fetched {} contacts for user={}", contacts.size(), email);
+        return  contacts;
     }
 
     public void deleteContact(Long contactId, String email) {
@@ -53,6 +59,7 @@ public class ContactService {
         }
         // delete the contact
         contactRepository.delete(contact);
+        log.info("Contact deleted id={} by user={}", contactId, email);
     }
 
     public Contact updateContact(Long contactId, Contact updatedContact, String email) {
@@ -75,7 +82,9 @@ public class ContactService {
         existingContact.setPhoneNumber(updatedContact.getPhoneNumber());
         existingContact.setPhoneNumberLabel(updatedContact.getPhoneNumberLabel());
 
-        return contactRepository.save(existingContact);
+        Contact saved = contactRepository.save(existingContact);
+        log.info("Contact updated id={} by user={}", saved.getId(), email);
+        return saved;
     }
 
     // Search contacts by keyword in first name or last name
@@ -84,6 +93,8 @@ public class ContactService {
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new UsernameNotFoundException("Bad Credentials"));
 
-        return contactRepository.searchContacts(user.getId(), keyword);
+        List<Contact> results =  contactRepository.searchContacts(user.getId(), keyword);
+        log.info("Search returned {} results for user={}", results.size(), email);
+        return results;
     }
 }
