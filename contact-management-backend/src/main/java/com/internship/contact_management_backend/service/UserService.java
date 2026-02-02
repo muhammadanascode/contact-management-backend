@@ -21,15 +21,20 @@ public class UserService {
         // Register a new user
         public User register(User user) {
 
-            // 1. Validate business rule: email must be unique
+            //1. Email should not be null or empty
+            if (user.getEmail() == null || user.getEmail().isBlank()) {
+                throw new IllegalArgumentException("Email cannot be null or empty");
+            }
+
+            // 2. Validate business rule: email must be unique
             if (userRepository.existsByEmail(user.getEmail())) {
                 throw new IllegalArgumentException("Email already exists");
             }
 
-            // 2. Hash password before saving
+            // 3. Hash password before saving
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-            // 3. Save user
+            // 4. Save user
             User saved =  userRepository.save(user);
             log.info("User registered successfully id={} email={}", saved.getId(), saved.getEmail());
             return  saved;
@@ -45,7 +50,17 @@ public class UserService {
             throw new IllegalArgumentException("Passwords do not match");
         }
 
+        //throw error if the new password is null
+        if (dto.getNewPassword() == null || dto.getNewPassword().isBlank()) {
+            throw new IllegalArgumentException("New password cannot be empty");
+        }
+
         User user = findByEmail(email);
+
+        //if the user doesn't exists
+        if (user == null) {
+            throw new NullPointerException("User not found");
+        }
 
         // Validate old password
         if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
