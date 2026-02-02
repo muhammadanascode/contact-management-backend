@@ -3,8 +3,10 @@ package com.internship.contact_management_backend.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class UpdatePasswordDto {
     // Old Password
     @NotBlank(message = "Old password is required")
