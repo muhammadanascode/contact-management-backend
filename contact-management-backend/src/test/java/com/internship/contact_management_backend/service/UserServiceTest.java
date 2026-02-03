@@ -211,10 +211,12 @@ class UserServiceTest {
         dto.setNewPassword("newPassword123");
         dto.setConfirmPassword("differentPassword123");
 
+        String email = testUser.getEmail();
+
         // Act & Assert
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> userService.updatePassword(testUser.getEmail(), dto)
+                () -> userService.updatePassword(email, dto)
         );
 
         assertEquals("Passwords do not match", exception.getMessage());
@@ -242,10 +244,12 @@ class UserServiceTest {
         when(passwordEncoder.matches(oldPassword, encodedPassword))
                 .thenReturn(false);
 
+        String email = testUser.getEmail();
+
         // Act & Assert
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> userService.updatePassword(testUser.getEmail(), dto)
+                () -> userService.updatePassword(email, dto)
         );
 
         assertEquals("Old password is incorrect", exception.getMessage());
@@ -266,10 +270,12 @@ class UserServiceTest {
         when(userRepository.findByEmail(testUser.getEmail()))
                 .thenReturn(Optional.empty());
 
+        String email = testUser.getEmail();
+
         // Act & Assert
         assertThrows(
                 NullPointerException.class,
-                () -> userService.updatePassword(testUser.getEmail(), dto)
+                () -> userService.updatePassword(email, dto)
         );
 
         verify(userRepository).findByEmail(testUser.getEmail());
@@ -288,10 +294,12 @@ class UserServiceTest {
 
         testUser.setPassword("encodedOldPassword");
 
+        String email = testUser.getEmail();
+
         // Act & Assert
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> userService.updatePassword(testUser.getEmail(), dto)
+                () -> userService.updatePassword(email, dto)
         );
 
         assertEquals("New password cannot be empty", exception.getMessage());
