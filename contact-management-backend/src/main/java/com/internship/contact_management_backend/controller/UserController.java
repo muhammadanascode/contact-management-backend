@@ -10,6 +10,7 @@ import com.internship.contact_management_backend.service.UserService;
 import com.internship.contact_management_backend.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +36,9 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(@Valid @RequestBody UserRegisterDto user) {
         User savedUser = userService.register(user.toEntity());
-        return ResponseEntity.ok(savedUser.toDto());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)  // <-- returns 201 instead of 200
+                .body(savedUser.toDto());
     }
 
     @PostMapping("/login")
