@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public ProfileController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/info")
     public ResponseEntity<UserResponseDto> getProfileInfo() {

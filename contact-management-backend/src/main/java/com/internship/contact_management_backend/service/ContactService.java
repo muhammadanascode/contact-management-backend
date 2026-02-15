@@ -6,7 +6,6 @@ import com.internship.contact_management_backend.exception.ResourceNotFoundExcep
 import com.internship.contact_management_backend.repository.ContactRepository;
 import com.internship.contact_management_backend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,13 @@ import java.util.List;
 @Slf4j
 public class ContactService {
 
-    @Autowired
-    private ContactRepository contactRepository;
+    private final ContactRepository contactRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public ContactService(ContactRepository contactRepository, UserRepository userRepository) {
+        this.contactRepository = contactRepository;
+        this.userRepository = userRepository;
+    }
 
     private static final String BAD_CREDENTIALS = "Bad Credentials";
 

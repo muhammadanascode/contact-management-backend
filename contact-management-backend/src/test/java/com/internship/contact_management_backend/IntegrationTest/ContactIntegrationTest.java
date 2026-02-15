@@ -9,7 +9,6 @@ import com.internship.contact_management_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -28,20 +27,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ContactIntegrationTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private final MockMvc mockMvc;
+    private final UserRepository userRepository;
+    private final ContactRepository contactRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper objectMapper;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ContactRepository contactRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    public ContactIntegrationTest(MockMvc mockMvc, UserRepository userRepository,
+                                  ContactRepository contactRepository, PasswordEncoder passwordEncoder,
+                                  ObjectMapper objectMapper) {
+        this.mockMvc = mockMvc;
+        this.userRepository = userRepository;
+        this.contactRepository = contactRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.objectMapper = objectMapper;
+    }
 
     private static final String TEST_EMAIL = "test@example.com";
     private static final String PASSWORD = "password123";

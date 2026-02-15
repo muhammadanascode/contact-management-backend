@@ -3,7 +3,6 @@ package com.internship.contact_management_backend.service;
 import com.internship.contact_management_backend.dto.UpdatePasswordDto;
 import com.internship.contact_management_backend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.internship.contact_management_backend.entity.User;
@@ -11,12 +10,13 @@ import com.internship.contact_management_backend.entity.User;
 @Service
 @Slf4j
 public class UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-        @Autowired
-        private UserRepository userRepository;
-
-        @Autowired
-        private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
         // Register a new user
         public User register(User user) {

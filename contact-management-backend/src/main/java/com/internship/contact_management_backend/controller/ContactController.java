@@ -4,7 +4,6 @@ import com.internship.contact_management_backend.dto.ContactDto;
 import com.internship.contact_management_backend.entity.Contact;
 import com.internship.contact_management_backend.service.ContactService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,8 +16,11 @@ import java.util.List;
 @RequestMapping("/contacts")
 public class ContactController {
 
-    @Autowired
-    private ContactService contactService;
+    private final ContactService contactService;
+
+    public ContactController(ContactService contactService) {
+        this.contactService = contactService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<ContactDto> createContact(@Valid @RequestBody ContactDto contact){

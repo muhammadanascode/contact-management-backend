@@ -28,18 +28,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("User REST API Integration Tests")
 class UserIntegrationTest {
 
-    // ==================== DEPENDENCIES ====================
-    @Autowired
-    private MockMvc mockMvc;
+    private final MockMvc mockMvc;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper objectMapper;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    public UserIntegrationTest(MockMvc mockMvc, UserRepository userRepository,
+                               PasswordEncoder passwordEncoder, ObjectMapper objectMapper) {
+        this.mockMvc = mockMvc;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.objectMapper = objectMapper;
+    }
 
     // ==================== TEST CONSTANTS ====================
     private static final String TEST_EMAIL = "anas@sohail2.com";
