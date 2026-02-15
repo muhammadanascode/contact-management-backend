@@ -23,16 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Integration tests for User Authentication and Management APIs.
- *
- * Tests cover:
- * - User registration with password encoding
- * - User authentication (login) with token generation
- * - Password management and updates
- * - Uses MockMvc for HTTP testing and real Spring context for database interactions.
- * - Database is cleaned before each test using @BeforeEach (4x faster than @DirtiesContext).
- */
 @SpringBootTest
 @AutoConfigureMockMvc
 @DisplayName("User REST API Integration Tests")
@@ -61,16 +51,7 @@ class UserIntegrationTest {
     // ==================== TEST FIXTURES ====================
     private User testUser;
 
-    /**
-     * Runs before each test method.
-     * - Clears database (ensures clean state)
-     * - Creates fresh test user instance
-     *
-     * Note: We use @BeforeEach deleteAll() instead of @DirtiesContext because:
-     *   - 4x faster execution (context reuse vs recreation)
-     *   - Sufficient for clearing database between tests
-     *   - Industry standard for integration tests
-     */
+
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
@@ -84,14 +65,7 @@ class UserIntegrationTest {
 
     // ==================== HELPER METHODS ====================
 
-    /**
-     * Helper method to create and save a user with encoded password.
-     * Useful for tests that need an existing user without going through registration endpoint.
-     *
-     * @param email User email
-     * @param rawPassword Plain text password (will be encoded)
-     * @return Saved user with encoded password
-     */
+
     private User createAndSaveUser(String email, String rawPassword) {
         User user = new User();
         user.setEmail(email);
@@ -101,14 +75,6 @@ class UserIntegrationTest {
         return userRepository.save(user);
     }
 
-    /**
-     * Helper method to create a UserLoginDto.
-     * Reduces code duplication in login tests.
-     *
-     * @param email Login email
-     * @param password Login password
-     * @return UserLoginDto instance
-     */
     private UserLoginDto createLoginRequest(String email, String password) {
         UserLoginDto loginRequest = new UserLoginDto();
         loginRequest.setEmail(email);
@@ -116,15 +82,6 @@ class UserIntegrationTest {
         return loginRequest;
     }
 
-    /**
-     * Helper method to create UpdatePasswordDto.
-     * Reduces code duplication in password update tests.
-     *
-     * @param oldPassword Current password
-     * @param newPassword New password
-     * @param confirmPassword Password confirmation
-     * @return UpdatePasswordDto instance
-     */
     private UpdatePasswordDto createPasswordUpdateRequest(String oldPassword, String newPassword, String confirmPassword) {
         UpdatePasswordDto dto = new UpdatePasswordDto();
         dto.setOldPassword(oldPassword);
