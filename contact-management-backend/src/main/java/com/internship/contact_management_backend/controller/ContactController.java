@@ -5,6 +5,7 @@ import com.internship.contact_management_backend.entity.Contact;
 import com.internship.contact_management_backend.service.ContactService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +29,9 @@ public class ContactController {
 
         //create contact
        Contact savedContact = contactService.createContact(contact.toEntity(),userEmail);
-       return ResponseEntity.ok(savedContact.toDto());
+       return ResponseEntity
+               .status(HttpStatus.CREATED)
+               .body(savedContact.toDto());
 
     }
 
