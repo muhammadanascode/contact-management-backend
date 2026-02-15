@@ -9,6 +9,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -32,6 +33,7 @@ class UserIntegrationTest {
     private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper;
 
+    @Autowired
     public UserIntegrationTest(MockMvc mockMvc, UserRepository userRepository,
                                PasswordEncoder passwordEncoder, ObjectMapper objectMapper) {
         this.mockMvc = mockMvc;
